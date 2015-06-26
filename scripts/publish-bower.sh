@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Push a version update commit with this message
 MESSAGE=$(git log --oneline -n1)
 
