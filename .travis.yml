@@ -1,10 +1,10 @@
 sudo: false
 cache:
   directories:
-    - node_modules
+  - node_modules
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 before_install: npm install -g grunt-cli
 after_success: grunt travis
 deploy:
@@ -14,3 +14,5 @@ deploy:
     tags: true
     all_branches: true
     repo: AppGyver/ag-module-router
+  api_key:
+    secure: RcYiLvWSmCF+kZ4BVLRLaZ172k9Kj3Dq6TsdoUuKqpTVl0L86vZ6L/PdOE7AlBoNFyEX4PxV93j7gTB5GBV2+y1j+33W1ysaHvc9RX7BB08EGxMPj9oGk7LPaYCq/EUKfHchd9/l1DAgt3rlBddN9PZt4MsxY+prnrfk9X5YE83DJuFmsx/IrbYkxKgjkjf2V3lM38OABBY0Kijbqx4Wc7gEsEXvzY9iwYtM70leLkEqVC/N8GGN/IH7lwiLSjxZAHBHuHmpqht/KP2+0DW353wDst+deXwNMDcXurD9mQcfsOYH3xxCQdbGiAtR+DD1MLMGsS5eWfD4EFPL5LtLcsGqW2LE8C5p4B4+9eV1dB/qFJ8gJI6gIKqCvG3fIwz9p7UOEBQA5eg/9nUG4QO+6L+7EMuvERvOAFy31ksPZ/9ytoOxV+p8oTWFZuMyaSxNjNcZ3y6bOk3l7YzA6uBCG+0y+e1dnvQQs3WrW78eYZaWFPj0MGuNCGHx/IKAmrKOj35kMM16k9Xsh0GTEUOsu/JgPVTrul9hdyn5Weo4xMAfqhcdxNbJcaKvbiQz6wLnhN4et0ahV+KuRH1txlJ2HfF68eDu40ZddJ48qFI/vyhjio042Iu7P/VwQ+40V4gS3k/AipcU9hEZUjLDK5wEDxtKv+FiHvj70Sf0us2PLD4=
