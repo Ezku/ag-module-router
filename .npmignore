@@ -1,3 +1,5 @@
+/dist
+/scripts
 /tasks
 /test
 
@@ -5,3 +7,5 @@
 /coffeelint.json
 /env.json
 /Gruntfile.coffee
+/Makefile
+/README.bower.md
