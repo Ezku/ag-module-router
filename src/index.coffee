@@ -1,16 +1,30 @@
 { Rx, h } = Cycle
 Promise = supersonic.internal.Promise
 
-main = (drivers) ->
+module.exports =
+  run: (targetSelector, options, createInitialViewstack) ->
+    options.moduleRoot ?= "/components"
+    Cycle.run main(Immutable.fromJS(createInitialViewstack(Viewstack)), createViewstackRenderer(options.moduleRoot)), {
+      DOM: Cycle.makeDOMDriver targetSelector
+    }
+
+if window?
+  window.ag ?= {}
+  window.ag.module ?= {}
+  window.ag.module.router = module.exports
+
+
+main = (initialViewstack, renderViewstack) -> (drivers) ->
   DOM: do ->
     Rx.Observable.of(initialViewstack)
       .merge(pushPopModification())
       .scan((viewstack, modification) -> modification viewstack)
-      .map(render.viewstack)
+      .map(renderViewstack)
       .doOnError(
         (error) ->
           console.error error
       )
+
 
 Viewstack = do ->
   views: (views...) -> { views }
@@ -23,25 +37,43 @@ Viewstack = do ->
       object[key] = value
     object
 
-initialViewstack = do ({views, view, components, component, args} = Viewstack) ->
-  Immutable.fromJS(
-    views(
-      view(
-        components(
-          component("tasks/index", args {
-            'date-format': "MMMM Do YYYY, h:mm:ss a"
-          })
-        )
-      )
-    )
-  )
 
-continuousIncreaseModification = ->
-  duplicateFirstView = (viewstack) ->
-    viewstack.update 'views', (views) ->
-      views.push views.get(0)
+createViewstackRenderer = (moduleRoot) ->
+  render = do ->
+    route = (name) ->
+      "#{moduleRoot}/#{name}.html"
 
-  Rx.Observable.interval(5000).map(-> duplicateFirstView)
+    componentAttributes = (component) ->
+      component
+        .get('params')
+        .mapKeys((key) -> "data-#{key}")
+        .merge({
+          src: route component.get('route')
+          'data-module': 'true'
+        })
+        .toJS()
+
+    viewAttributes = (view) ->
+      if view.get('show')
+        styles: "display: block;"
+      else
+        styles: "display: hidden;"
+
+    viewstack: (viewstack) ->
+      h 'div#viewstack', (viewstack.get('views').map(render.view)).toJS()
+
+    view: (view) ->
+      h 'div.view', {
+        attributes: viewAttributes view
+      }, view.get('components').map(render.component).toJS()
+
+    component: (component) ->
+      h 'iframe', {
+        attributes: componentAttributes component
+      }
+
+  return render.viewstack
+
 
 pushPopModification = do ->
   modifications =
@@ -104,41 +136,3 @@ pushPopModification = do ->
           when request.pop? then modifications.pop request
           else modifications.nothing
       )
-
-render = do ->
-
-  route = (name) ->
-    "/components/supersonic-base-module/#{name}.html"
-
-  componentAttributes = (component) ->
-    component
-      .get('params')
-      .mapKeys((key) -> "data-#{key}")
-      .merge({
-        src: route component.get('route')
-        'data-module': 'true'
-      })
-      .toJS()
-
-  viewAttributes = (view) ->
-    if view.get('show')
-      styles: "display: block;"
-    else
-      styles: "display: hidden;"
-
-  viewstack: (viewstack) ->
-    h 'div#viewstack', (viewstack.get('views').map(render.view)).toJS()
-
-  view: (view) ->
-    h 'div.view', {
-      attributes: viewAttributes view
-    }, view.get('components').map(render.component).toJS()
-
-  component: (component) ->
-    h 'iframe', {
-      attributes: componentAttributes component
-    }
-
-Cycle.run main, {
-  DOM: Cycle.makeDOMDriver 'body'
-}
