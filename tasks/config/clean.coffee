@@ -1,2 +1,3 @@
 module.exports =
-  compile: '<%= dir.dist %>'
+  compile: '<%= dir.lib %>'
+  dist: '<%= dir.dist %>'

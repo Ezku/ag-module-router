@@ -5,8 +5,10 @@ cache:
 language: node_js
 node_js:
 - '0.10'
-before_install: npm install -g grunt-cli
-after_success: grunt travis
+before_install: make install-global-deps
+after_success:
+- grunt travis
+- make publish-bower
 deploy:
   provider: npm
   email: eevert.saukkokoski@appgyver.com

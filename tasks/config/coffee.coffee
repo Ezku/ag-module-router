@@ -2,6 +2,6 @@ module.exports =
   compile:
     src: '**/*.coffee'
     cwd: '<%= dir.src %>'
-    dest: '<%= dir.dist %>'
+    dest: '<%= dir.lib %>'
     expand: true
     ext: '.js'
