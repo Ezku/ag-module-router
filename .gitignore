@@ -29,3 +29,6 @@ env.json
 
 # npm release artifacts
 /lib
+
+# bower deps
+/bower_components

@@ -1,0 +1,14 @@
+{
+  "name": "ag-module-router",
+  "version": "0.0.0",
+  "homepage": "https://github.com/AppGyver/ag-module-router",
+  "authors": [
+    "Eevert Saukkokoski <eevert.saukkokoski@appgyver.com>"
+  ],
+  "main": "dist/ag-module-router.js",
+  "license": "MIT",
+  "dependencies": {
+    "immutable": "~3.7.4",
+    "cycle": "~0.24.1"
+  }
+}
