@@ -26,3 +26,11 @@ describe 'view.render', ->
         select('.view IFRAME[data-module]')(render(viewstack({
           components: [ emptyComponent ]
         }))).length.should.equal 1
+
+      it 'can have a source', ->
+        [ renderedComponent ] = select('IFRAME')(render(viewstack({
+          components: [
+            source: '/path/to/component.html'
+          ]
+        })))
+        renderedComponent.properties.attributes.should.have.property('src').equal '/path/to/component.html'

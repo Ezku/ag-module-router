@@ -12,4 +12,5 @@ renderComponent = (component) ->
   }
 
 componentAttributes = (component) ->
+  src: component.get('source')
   'data-module': true
