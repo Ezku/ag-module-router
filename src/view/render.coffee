@@ -1,3 +1,4 @@
+Immutable = require 'immutable'
 { h } = require '@cycle/web'
 
 module.exports = renderViewstack = (viewstack) ->
@@ -11,6 +12,15 @@ renderComponent = (component) ->
     attributes: componentAttributes component
   }
 
-componentAttributes = (component) ->
-  src: component.get('source')
-  'data-module': true
+componentAttributes = do ->
+  emptyParams = Immutable.OrderedMap()
+
+  (component) ->
+    component
+      .get('params', emptyParams)
+      .mapKeys((key) -> "data-#{key}")
+      .merge(
+        src: component.get('source')
+        'data-module': true
+      )
+      .toJS()

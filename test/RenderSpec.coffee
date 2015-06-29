@@ -34,3 +34,12 @@ describe 'view.render', ->
           ]
         })))
         renderedComponent.properties.attributes.should.have.property('src').equal '/path/to/component.html'
+
+      it 'can have params', ->
+        [ renderedComponent ] = select('IFRAME')(render(viewstack({
+          components: [
+            params:
+              foo: 'bar'
+          ]
+        })))
+        renderedComponent.properties.attributes.should.have.property('data-foo').equal 'bar'
