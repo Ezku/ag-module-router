@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@cycle/core": "^1.0.0-rc1",
-    "@cycle/web": "^1.0.0"
+    "@cycle/web": "^1.0.0",
+    "immutable": "^3.7.4"
   }
 }
