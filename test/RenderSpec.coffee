@@ -27,19 +27,21 @@ describe 'view.render', ->
           components: [ emptyComponent ]
         }))).length.should.equal 1
 
-      it 'can have a source', ->
-        [ renderedComponent ] = select('IFRAME')(render(viewstack({
-          components: [
-            source: '/path/to/component.html'
-          ]
-        })))
-        renderedComponent.properties.attributes.should.have.property('src').equal '/path/to/component.html'
+      describe 'source', ->
+        it 'is rendered as the src attribute', ->
+          [ renderedComponent ] = select('IFRAME')(render(viewstack({
+            components: [
+              source: '/path/to/component.html'
+            ]
+          })))
+          renderedComponent.properties.attributes.should.have.property('src').equal '/path/to/component.html'
 
-      it 'can have params', ->
-        [ renderedComponent ] = select('IFRAME')(render(viewstack({
-          components: [
-            params:
-              foo: 'bar'
-          ]
-        })))
-        renderedComponent.properties.attributes.should.have.property('data-foo').equal 'bar'
+      describe 'params', ->
+        it 'is rendered as attributes with the data-prefix', ->
+          [ renderedComponent ] = select('IFRAME')(render(viewstack({
+            components: [
+              params:
+                foo: 'bar'
+            ]
+          })))
+          renderedComponent.properties.attributes.should.have.property('data-foo').equal 'bar'
