@@ -12,5 +12,17 @@ describe 'view.render', ->
     select('DIV#viewstack').matches(render(viewstack())).should.be.true
 
   describe 'view', ->
+    emptyView = {
+      components: []
+    }
+
     it 'is rendered as a div', ->
-      select('DIV.view')(render(viewstack({}))).length.should.equal 1
+      select('#viewstack DIV.view')(render(viewstack(emptyView))).length.should.equal 1
+
+    describe 'component', ->
+      emptyComponent = {}
+
+      it 'is rendered as an iframe with the data-module flag', ->
+        select('.view IFRAME[data-module]')(render(viewstack({
+          components: [ emptyComponent ]
+        }))).length.should.equal 1
