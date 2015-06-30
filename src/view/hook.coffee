@@ -1,7 +1,9 @@
 { Rx } = require '@cycle/core'
 
-module.exports = ->
-  new Hook
+module.exports = (withHandler = null) ->
+  h = new Hook
+  withHandler?(h.subject)
+  h
 
 class Hook
   subject: null
@@ -15,10 +17,6 @@ class Hook
   unhook: (node, propertyName, previousValue) ->
     @subject.onCompleted()
     @subject.dispose()
-
-  subscribe: (args...) =>
-    @subject.subscribe(args...)
-    this
 
 class HookEvent
   constructor: (@node, @propertyName, @previousValue) ->
