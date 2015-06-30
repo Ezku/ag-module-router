@@ -10,6 +10,7 @@ module.exports = transition = (handlers) ->
         .map (view) ->
           switch
             when view.get('show') and handlers.show? then addHook view, 'show', handlers.show
+            when !view.get('show') and handlers.hide? then addHook view, 'hide', handlers.hide
             else view
 
 addHook = do ->

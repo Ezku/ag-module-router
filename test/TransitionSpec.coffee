@@ -27,3 +27,14 @@ describe 'view.transition', ->
           components: []
         ))
         whenShown.should.have.been.called
+
+    describe 'hide', ->
+      it 'is triggered when a view with show state disabled is created', ->
+        whenHidden = sinon.stub()
+        createElement renderViewstack transition(
+          hide: whenHidden
+        )(viewstack(
+          show: false
+          components: []
+        ))
+        whenHidden.should.have.been.called
