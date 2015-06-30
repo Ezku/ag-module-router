@@ -50,3 +50,9 @@ describe 'model.modification', ->
         .last()
         .get('show', false)
         .should.equal true
+
+    it 'ensures only view left on top has show state', ->
+      modification.pop()(modification.push(emptyView)(viewstack(emptyView)))
+        .get('views')
+        .filter((view) -> view.has('show'))
+        .size.should.equal 1
