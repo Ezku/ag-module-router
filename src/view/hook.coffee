@@ -12,6 +12,10 @@ class Hook
   hook: (node, propertyName, previousValue) ->
     @subject.onNext new HookEvent(node, propertyName, previousValue)
 
+  unhook: (node, propertyName, previousValue) ->
+    @subject.onCompleted()
+    @subject.dispose()
+
   subscribe: (args...) =>
     @subject.subscribe(args...)
     this
