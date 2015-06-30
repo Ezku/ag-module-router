@@ -4,6 +4,7 @@ sinon = require 'sinon'
 chai.use(require 'sinon-chai')
 
 { Rx } = require '@cycle/core'
+Immutable = require 'immutable'
 createElement = require 'virtual-dom/create-element'
 renderViewstack = require '../src/view/render'
 viewstack = require '../src/model/viewstack'
@@ -80,17 +81,36 @@ describe 'view.transition', ->
         whenCompleted.should.have.been.called
 
     describe 'with transition hooks', ->
-      it 'yields the stack with hooks applied as the first item', ->
-        init = viewstack(
-          show: true
-          components: []
-        )
+      init = viewstack(
+        show: true
+        components: []
+      )
+      emptyHooks = Immutable.OrderedMap()
+
+      it 'yields a start state and a complete state', ->
         transition(
           show: ->
-        )(init).subscribeOnNext (stack) ->
+        )(init).map(-> 1).sum().subscribeOnNext (numberOfStates) ->
+          numberOfStates.should.equal 2
+
+      it 'yields the stack with hooks applied as the first item', ->
+        transition(
+          show: ->
+        )(init).take(1).subscribeOnNext (stack) ->
           stack
             .get('views')
             .first()
             .get('hooks')
             .has('show')
             .should.equal true
+
+      it 'yields the stack without hooks as the second item', ->
+        transition(
+          show: ->
+        )(init).skip(1).subscribeOnNext (stack) ->
+          stack
+            .get('views')
+            .first()
+            .get('hooks', emptyHooks)
+            .has('show')
+            .should.equal false
