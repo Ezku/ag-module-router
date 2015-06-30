@@ -3,6 +3,7 @@ select = require 'vtree-select'
 
 render = require '../src/view/render'
 viewstack = require '../src/model/viewstack'
+hook = require '../src/view/hook'
 
 describe 'view.render', ->
   it 'is a function', ->
@@ -18,6 +19,15 @@ describe 'view.render', ->
 
     it 'is rendered as a div', ->
       select('#viewstack DIV.view')(render(viewstack(emptyView))).length.should.equal 1
+
+    it 'can have vtree hooks applied', ->
+      h = hook()
+      [ renderedView ] = select('.view')(render(viewstack(
+        components: []
+        hooks:
+          hook: h
+      )))
+      renderedView.should.have.property('hooks').have.property('hook').equal h
 
     describe 'component', ->
       emptyComponent = {}
