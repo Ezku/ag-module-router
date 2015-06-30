@@ -8,8 +8,8 @@ module.exports = transition = (handlers) ->
     Rx.Observable.of(
       viewstack.update 'views', (views) ->
         views
-          .filter((view) -> view.has 'show')
           .map (view) ->
+            return view unless view.has 'show'
             switch
               when view.get('show') and handlers.show? then addHook view, 'show', handlers.show
               when !view.get('show') and handlers.hide? then addHook view, 'hide', handlers.hide

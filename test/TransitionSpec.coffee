@@ -66,6 +66,8 @@ describe 'view.transition', ->
 
   describe 'stream', ->
     it 'yields the input viewstack if there are no transition hooks', ->
-      init = viewstack()
+      init = viewstack(
+        components: []
+      )
       transition({})(init).subscribeOnNext (result) ->
         result.equals(init).should.be.true
