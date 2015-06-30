@@ -71,3 +71,18 @@ describe 'view.transition', ->
       )
       transition({})(init).subscribeOnNext (result) ->
         result.equals(init).should.be.true
+
+    it 'yields the stack with any hooks applied as the first item', ->
+      init = viewstack(
+        show: true
+        components: []
+      )
+      transition(
+        show: ->
+      )(init).subscribeOnNext (stack) ->
+        stack
+          .get('views')
+          .first()
+          .get('hooks')
+          .has('show')
+          .should.equal true
