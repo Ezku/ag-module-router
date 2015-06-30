@@ -18,4 +18,5 @@ addHook = do ->
 
   (view, name, handler) ->
     view.update 'hooks', emptyHooks, (hooks) ->
-      hooks.set name, hook handler
+      hooks.set name, hook (e) ->
+        e.subscribeOnNext(handler)

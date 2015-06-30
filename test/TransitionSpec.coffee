@@ -28,6 +28,15 @@ describe 'view.transition', ->
         ))
         whenShown.should.have.been.called
 
+      it 'receives the hook event as an argument', ->
+        createElement renderViewstack transition(
+          show: (event) ->
+            event.should.have.keys('node', 'previousValue', 'propertyName')
+        )(viewstack(
+          show: true
+          components: []
+        ))
+
     describe 'hide', ->
       it 'is triggered when a view with show state disabled is created', ->
         whenHidden = sinon.stub()
@@ -38,3 +47,12 @@ describe 'view.transition', ->
           components: []
         ))
         whenHidden.should.have.been.called
+
+      it 'receives the hook event as an argument', ->
+        createElement renderViewstack transition(
+          hide: (event) ->
+            event.should.have.keys('node', 'previousValue', 'propertyName')
+        )(viewstack(
+          show: false
+          components: []
+        ))
