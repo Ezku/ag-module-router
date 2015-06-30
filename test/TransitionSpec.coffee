@@ -64,3 +64,8 @@ describe 'view.transition', ->
   it 'turns the viewstack into a stream of viewstacks with successive transition states', ->
     transition({})(viewstack()).should.be.an.instanceof Rx.Observable
 
+  describe 'stream', ->
+    it 'yields the input viewstack if there are no transition hooks', ->
+      init = viewstack()
+      transition({})(init).subscribeOnNext (result) ->
+        result.equals(init).should.be.true
