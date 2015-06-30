@@ -29,6 +29,12 @@ describe 'model.modification', ->
         .get('show', true)
         .should.equal false
 
+    it 'removes show state from views except the one affected', ->
+      modification.push(emptyView)(modification.push(emptyView)(viewstack(emptyView)))
+        .get('views')
+        .filter((view) -> view.has('show'))
+        .size.should.equal 1
+
   describe 'pop', ->
     it 'is a function', ->
       modification.should.have.property('pop').be.a 'function'
