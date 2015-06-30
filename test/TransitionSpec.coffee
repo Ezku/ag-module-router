@@ -65,24 +65,27 @@ describe 'view.transition', ->
     transition({})(viewstack()).should.be.an.instanceof Rx.Observable
 
   describe 'stream', ->
-    it 'yields the input viewstack if there are no transition hooks', ->
+    describe 'without transition hooks', ->
       init = viewstack(
         components: []
       )
-      transition({})(init).subscribeOnNext (result) ->
-        result.equals(init).should.be.true
 
-    it 'yields the stack with any hooks applied as the first item', ->
-      init = viewstack(
-        show: true
-        components: []
-      )
-      transition(
-        show: ->
-      )(init).subscribeOnNext (stack) ->
-        stack
-          .get('views')
-          .first()
-          .get('hooks')
-          .has('show')
-          .should.equal true
+      it 'yields the input viewstack', ->
+        transition({})(init).subscribeOnNext (result) ->
+          result.equals(init).should.be.true
+
+    describe 'with transition hooks', ->
+      it 'yields the stack with hooks applied as the first item', ->
+        init = viewstack(
+          show: true
+          components: []
+        )
+        transition(
+          show: ->
+        )(init).subscribeOnNext (stack) ->
+          stack
+            .get('views')
+            .first()
+            .get('hooks')
+            .has('show')
+            .should.equal true
