@@ -5,7 +5,7 @@ module.exports = renderViewstack = (viewstack) ->
   h 'div#viewstack', viewstack.get('views').map(renderView).toJS()
 
 renderView = (view) ->
-  h 'div.view', viewAttributes(view), view.get('components').map(renderComponent).toJS()
+  h 'div.view', viewProps(view), view.get('components').map(renderComponent).toJS()
 
 renderComponent = (component) ->
   h 'iframe', {
@@ -25,7 +25,7 @@ componentAttributes = do ->
       )
       .toJS()
 
-viewAttributes = do ->
+viewProps = do ->
   emptyHooks = Immutable.OrderedMap()
 
   (view) ->
