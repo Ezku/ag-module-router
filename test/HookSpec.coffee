@@ -12,13 +12,17 @@ describe 'view.hook', ->
   it 'is a function', ->
     hook.should.be.a 'function'
 
-  it 'makes a function into a hook instance', ->
-    hook(->).should.have.property('hook').be.a 'function'
+  it 'creates a hook instance', ->
+    hook().should.respondTo('hook')
 
   describe 'instance', ->
-    it 'is triggered when creating element', ->
-      whenCreated = sinon.stub()
-      createElement h 'div', {
-        hook: hook(whenCreated)
-      }
-      whenCreated.should.have.been.called
+    describe 'subscribe', ->
+      it 'is a function', ->
+        hook().should.have.property('subscribe').be.a 'function'
+
+      it 'allows subscribing to creation events', ->
+        whenCreated = sinon.stub()
+        createElement h 'div', {
+          hook: hook().subscribe(whenCreated)
+        }
+        whenCreated.should.have.been.called
