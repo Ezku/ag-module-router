@@ -74,6 +74,11 @@ describe 'view.transition', ->
         transition({})(init).subscribeOnNext (result) ->
           result.equals(init).should.be.true
 
+      it 'completes immediately', ->
+        whenCompleted = sinon.stub()
+        transition({})(init).subscribeOnCompleted(whenCompleted)
+        whenCompleted.should.have.been.called
+
     describe 'with transition hooks', ->
       it 'yields the stack with hooks applied as the first item', ->
         init = viewstack(
