@@ -3,11 +3,15 @@ chai.should()
 sinon = require 'sinon'
 chai.use(require 'sinon-chai')
 
+{ Rx } = require '@cycle/core'
 createElement = require 'virtual-dom/create-element'
 renderViewstack = require '../src/view/render'
 viewstack = require '../src/model/viewstack'
 
 transition = require '../src/view/transition'
+
+runTransition = (t) ->
+  t.map(renderViewstack).map(createElement).subscribe()
 
 describe 'view.transition', ->
   it 'is a function', ->
@@ -20,7 +24,7 @@ describe 'view.transition', ->
     describe 'show', ->
       it 'is triggered when a view with show state enabled is created', ->
         whenShown = sinon.stub()
-        createElement renderViewstack transition(
+        runTransition transition(
           show: whenShown
         )(viewstack(
           show: true
@@ -29,7 +33,7 @@ describe 'view.transition', ->
         whenShown.should.have.been.called
 
       it 'receives the hook event as an argument', ->
-        createElement renderViewstack transition(
+        runTransition transition(
           show: (event) ->
             event.should.have.keys('node', 'previousValue', 'propertyName')
         )(viewstack(
@@ -40,7 +44,7 @@ describe 'view.transition', ->
     describe 'hide', ->
       it 'is triggered when a view with show state disabled is created', ->
         whenHidden = sinon.stub()
-        createElement renderViewstack transition(
+        runTransition transition(
           hide: whenHidden
         )(viewstack(
           show: false
@@ -49,10 +53,14 @@ describe 'view.transition', ->
         whenHidden.should.have.been.called
 
       it 'receives the hook event as an argument', ->
-        createElement renderViewstack transition(
+        runTransition transition(
           hide: (event) ->
             event.should.have.keys('node', 'previousValue', 'propertyName')
         )(viewstack(
           show: false
           components: []
         ))
+
+  it 'turns the viewstack into a stream of viewstacks with successive transition states', ->
+    transition({})(viewstack()).should.be.an.instanceof Rx.Observable
+
