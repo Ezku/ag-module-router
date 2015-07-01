@@ -8,5 +8,7 @@ module.exports = commandToModification = (modifications) ->
       throw new Error "Unknown command: #{command.type}"
     else
       modification = modifications.get(command.type)
-      modification(command.params)
+      modification(deepClone command.params)
 
+deepClone = (object) ->
+  JSON.parse JSON.stringify object

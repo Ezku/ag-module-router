@@ -21,8 +21,12 @@ describe 'intent.interpret', ->
         push: (v) -> 'result'
       )(commands.push({})).should.equal 'result'
 
-    it 'passes command params to the modification', ->
-      view = {}
+    it 'sanitizes command params before modification', ->
+      view = {
+        components: []
+      }
       createInterpreter(
-        push: (v) -> v.should.equal view
+        push: (v) ->
+          v.should.not.equal view
+          v.should.deep.equal view
       )(commands.push(view))
