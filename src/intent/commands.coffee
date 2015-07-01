@@ -1,6 +1,6 @@
 
 module.exports = commands =
-  push: (view) -> new Command 'push', { view }
+  push: (view) -> new Command 'push', view
   pop: -> new Command 'pop'
 
 class Command

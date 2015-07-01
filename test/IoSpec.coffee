@@ -27,7 +27,7 @@ describe 'intent.io', ->
         { input, output } = createCommandIO()
         output.subscribeOnNext (e) ->
           e.should.have.property('type').equal 'push'
-          e.should.have.property('params').deep.equal { view }
+          e.should.have.property('params').equal view
         input.push view
 
     describe 'pop', ->
