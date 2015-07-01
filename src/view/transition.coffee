@@ -17,7 +17,7 @@ module.exports = transition = (handlers) ->
       ]
 
 addHooks = (viewstack, handlers) ->
-  viewstack.update 'views', (views) ->
+  viewstack.update 'views', Immutable.List(), (views) ->
     views
       .map (view) ->
         return view unless view.has 'show'
