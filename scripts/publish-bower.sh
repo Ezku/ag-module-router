@@ -5,7 +5,7 @@ set -e
 # Push a version update commit with this message
 MESSAGE=$(git log --oneline -n1)
 
-TARGET_DIR=$(mktemp -d)
+TARGET_DIR=$(mktemp -d XXXXXX)
 DIST_DIR=dist
 HEAD_VERSION=$(git rev-parse HEAD)
 DEFAULT_CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
