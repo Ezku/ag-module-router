@@ -4,6 +4,7 @@ chai.should()
 chai.use(require 'sinon-chai')
 
 { Rx } = require '@cycle/core'
+createElement = require 'virtual-dom/create-element'
 createCommandIO = require '../src/intent/io'
 
 main = require '../src/main'
@@ -26,24 +27,28 @@ describe 'main', ->
     whenShown = sinon.stub()
     whenHidden = sinon.stub()
     commands = createCommandIO()
+
     main(
       commands.output
       {
-        views: []
+        views: [
+          components: []
+        ]
       }
       {
         show: whenShown
         hide: whenHidden
       }
       '/path-to-modules'
-    ).subscribe ->
-      whenShown.should.not.have.been.called
-      whenHidden.should.not.have.been.called
-      commands.input.push({
-        components: [
-          source: 'foo.html'
-        ]
-      })
-      whenShown.should.have.been.called
-      commands.input.pop()
-      whenHidden.should.have.been.called
+    ).subscribe(createElement)
+
+    commands.input.push({
+      components: [
+        source: 'foo.html'
+      ]
+    })
+    whenHidden.should.have.been.called
+
+    commands.input.pop()
+
+    whenShown.should.have.been.called
