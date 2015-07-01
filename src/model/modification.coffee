@@ -10,7 +10,7 @@ module.exports =
             .update(-1, (view) ->
               view?.set('show', false)
             )
-            .push Immutable.fromJS view
+            .push view
 
   pop: () -> (viewstack) ->
     viewstack.update 'views', (views) ->

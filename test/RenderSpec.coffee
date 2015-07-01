@@ -3,6 +3,7 @@ select = require 'vtree-select'
 
 render = require '../src/view/render'
 viewstack = require '../src/model/viewstack'
+view = require '../src/model/view'
 hook = require '../src/view/hook'
 
 describe 'view.render', ->
@@ -13,9 +14,7 @@ describe 'view.render', ->
     select('DIV#viewstack').matches(render(viewstack())).should.be.true
 
   describe 'view', ->
-    emptyView = {
-      components: []
-    }
+    emptyView = view()
 
     it 'is rendered as a div', ->
       select('#viewstack DIV.view')(render(viewstack(emptyView))).length.should.equal 1

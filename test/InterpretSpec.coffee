@@ -27,6 +27,5 @@ describe 'intent.interpret', ->
       }
       createInterpreter(
         push: (v) ->
-          v.should.not.equal view
-          v.should.deep.equal view
+          v.toJS().should.deep.equal view
       )(commands.push(view))

@@ -1,12 +1,12 @@
 require('chai').should()
+Immutable = require 'immutable'
 
 modification = require '../src/model/modification'
 viewstack = require '../src/model/viewstack'
+view = require '../src/model/view'
 
 emptyStack = viewstack()
-emptyView = {
-  components: []
-}
+emptyView = view()
 
 describe 'model.modification', ->
 
