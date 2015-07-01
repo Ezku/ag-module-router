@@ -1,5 +1,7 @@
 require('chai').should()
 
+viewstack = require '../src/model/viewstack'
+
 source = require '../src/model/source'
 
 describe 'model.source', ->
@@ -7,5 +9,15 @@ describe 'model.source', ->
     source.should.be.a 'function'
 
   it 'accepts an input Viewstack and produces an Observable', ->
-    source({}).subscribe (viewstack) ->
-      viewstack.should.deep.equal {}
+    source({
+      views: [
+        {
+          components: []
+        }
+      ]
+    }).subscribe (vs) ->
+      vs.toJS().should.deep.equal {
+        views: [
+          components: []
+        ]
+      }
