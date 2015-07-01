@@ -5,6 +5,7 @@ cache:
 language: node_js
 node_js:
 - '0.10'
+- '0.12'
 before_install: make install-global-deps
 after_success:
 - grunt travis
