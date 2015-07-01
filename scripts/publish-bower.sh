@@ -21,9 +21,6 @@ else
   echo Publishing branch $CURRENT_BRANCH version $HEAD_VERSION with message $MESSAGE
 fi
 
-# Build distributable
-grunt build
-
 # Clone target repo
 echo Cloning $TARGET_REPO_NAME to $TARGET_DIR
 git clone $TARGET_REPO_URL $TARGET_DIR --depth 1 > /dev/null
