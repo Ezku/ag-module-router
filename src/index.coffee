@@ -13,6 +13,9 @@ module.exports = run = (target, options = {}, makeDriver = makeDOMDriver) ->
       options.initialViewstack ? { views: [] }
       options.transitionHooks ? {}
       options.moduleRoot ? "/components"
+    ).doOnError(
+      (error) ->
+        console.error error
     )
   ), {
     DOM: makeDriver target
