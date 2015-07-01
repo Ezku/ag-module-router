@@ -22,8 +22,8 @@ addHooks = (viewstack, handlers) ->
       .map (view) ->
         return view unless view.has 'show'
         switch
-          when view.get('show') and handlers.has('show') then addHook view, 'show', handlers.get('show')
-          when !view.get('show') and handlers.has('hide') then addHook view, 'hide', handlers.get('hide')
+          when view.get('show') and handlers.has('pop') then addHook view, 'pop', handlers.get('pop')
+          when !view.get('show') and handlers.has('push') then addHook view, 'push', handlers.get('push')
           else view
 
 addHook = do ->

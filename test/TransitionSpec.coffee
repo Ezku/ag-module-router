@@ -8,6 +8,7 @@ Immutable = require 'immutable'
 createElement = require 'virtual-dom/create-element'
 renderViewstack = require '../src/view/render'
 viewstack = require '../src/model/viewstack'
+modification = require '../src/model/modification'
 
 transition = require '../src/view/transition'
 
@@ -22,11 +23,11 @@ describe 'view.transition', ->
     transition({}).should.be.a 'function'
 
   describe 'hook handlers', ->
-    describe 'show', ->
+    describe 'pop', ->
       it 'is triggered when a view with show state enabled is created', ->
         whenShown = sinon.stub()
         runTransition transition(
-          show: whenShown
+          pop: whenShown
         )(viewstack(
           show: true
           components: []
@@ -42,11 +43,11 @@ describe 'view.transition', ->
           components: []
         ))
 
-    describe 'hide', ->
+    describe 'push', ->
       it 'is triggered when a view with show state disabled is created', ->
         whenHidden = sinon.stub()
         runTransition transition(
-          hide: whenHidden
+          push: whenHidden
         )(viewstack(
           show: false
           components: []
@@ -55,7 +56,7 @@ describe 'view.transition', ->
 
       it 'receives the hook event as an argument', ->
         runTransition transition(
-          hide: (event) ->
+          push: (event) ->
             event.should.have.keys('node', 'previousValue', 'propertyName')
         )(viewstack(
           show: false
@@ -89,28 +90,28 @@ describe 'view.transition', ->
 
       it 'yields a start state and a complete state', ->
         transition(
-          show: ->
+          pop: ->
         )(init).map(-> 1).sum().subscribeOnNext (numberOfStates) ->
           numberOfStates.should.equal 2
 
       it 'yields the stack with hooks applied as the first item', ->
         transition(
-          show: ->
+          pop: ->
         )(init).take(1).subscribeOnNext (stack) ->
           stack
             .get('views')
             .first()
             .get('hooks')
-            .has('show')
+            .has('pop')
             .should.equal true
 
       it 'yields the stack without hooks as the second item', ->
         transition(
-          show: ->
+          pop: ->
         )(init).skip(1).subscribeOnNext (stack) ->
           stack
             .get('views')
             .first()
             .get('hooks', emptyHooks)
-            .has('show')
+            .has('pop')
             .should.equal false

@@ -36,8 +36,8 @@ describe 'main', ->
         ]
       }
       {
-        show: whenShown
-        hide: whenHidden
+        pop: whenShown
+        push: whenHidden
       }
       '/path-to-modules'
     ).subscribe(createElement)
