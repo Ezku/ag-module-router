@@ -1,6 +1,6 @@
 {
   "name": "ag-module-router",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "ag module router npm library",
   "main": "lib/index.js",
   "scripts": {
