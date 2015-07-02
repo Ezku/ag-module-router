@@ -29,10 +29,17 @@ describe 'model.modification', ->
         .get('show', true)
         .should.equal false
 
-    it 'removes show state from views except the one affected', ->
+    it 'marks the view on top as being pushed', ->
+      modification.push(emptyView)(viewstack(emptyView))
+        .get('views')
+        .last()
+        .get('transition')
+        .should.equal 'push'
+
+    it 'removes transition state from views except the one affected', ->
       modification.push(emptyView)(modification.push(emptyView)(viewstack(emptyView)))
         .get('views')
-        .filter((view) -> view.has('show'))
+        .filter((view) -> view.has('transition'))
         .size.should.equal 1
 
   describe 'pop', ->
@@ -51,8 +58,15 @@ describe 'model.modification', ->
         .get('show', false)
         .should.equal true
 
-    it 'ensures only view left on top has show state', ->
+    it 'marks the view on top with a pop transition', ->
+      modification.pop()(viewstack(emptyView, emptyView))
+        .get('views')
+        .last()
+        .get('transition')
+        .should.equal 'pop'
+
+    it 'ensures only view left on top has transition state', ->
       modification.pop()(modification.push(emptyView)(viewstack(emptyView)))
         .get('views')
-        .filter((view) -> view.has('show'))
+        .filter((view) -> view.has('transition'))
         .size.should.equal 1

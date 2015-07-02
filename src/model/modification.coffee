@@ -4,13 +4,15 @@ module.exports =
   push: (view) -> (viewstack) ->
     viewstack.update 'views', (views) ->
       views
-        .map((view) -> view.remove 'show')
-        .withMutations (v) ->
-          v
-            .update(-1, (view) ->
-              view?.set('show', false)
-            )
-            .push view
+        .map((view) ->
+          view
+            .set('show', false)
+            .remove('transition')
+        )
+        .push(view.merge {
+          show: true
+          transition: 'push'
+        })
 
   pop: () -> (viewstack) ->
     viewstack.update 'views', (views) ->
@@ -18,5 +20,8 @@ module.exports =
         v
           .pop()
           .update(-1, (view) ->
-            view?.set('show', true)
+            view?.merge {
+              show: true
+              transition: 'pop'
+            }
           )

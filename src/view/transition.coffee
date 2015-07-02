@@ -18,13 +18,15 @@ module.exports = transition = (handlers) ->
 
 addHooks = (viewstack, handlers) ->
   viewstack.update 'views', Immutable.List(), (views) ->
-    views
-      .map (view) ->
-        return view unless view.has 'show'
-        switch
-          when view.get('show') and handlers.has('pop') then addHook view, 'pop', handlers.get('pop')
-          when !view.get('show') and handlers.has('push') then addHook view, 'push', handlers.get('push')
-          else view
+    views.update -1, (view) ->
+      return view unless view?.has 'transition'
+
+      transition = view.get 'transition'
+
+      if handlers.has(transition)
+        addHook view, transition, handlers.get(transition)
+      else
+        view
 
 addHook = do ->
   emptyHooks = Immutable.OrderedMap()

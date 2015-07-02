@@ -24,32 +24,32 @@ describe 'view.transition', ->
 
   describe 'hook handlers', ->
     describe 'pop', ->
-      it 'is triggered when a view with show state enabled is created', ->
+      it 'is triggered when a view with a pop transition is created', ->
         whenShown = sinon.stub()
         runTransition transition(
           pop: whenShown
         )(viewstack(
-          show: true
+          transition: 'pop'
           components: []
         ))
         whenShown.should.have.been.called
 
       it 'receives the hook event as an argument', ->
         runTransition transition(
-          show: (event) ->
+          pop: (event) ->
             event.should.have.keys('node', 'previousValue', 'propertyName')
         )(viewstack(
-          show: true
+          transition: 'pop'
           components: []
         ))
 
     describe 'push', ->
-      it 'is triggered when a view with show state disabled is created', ->
+      it 'is triggered when a view with a push transition is created', ->
         whenHidden = sinon.stub()
         runTransition transition(
           push: whenHidden
         )(viewstack(
-          show: false
+          transition: 'push'
           components: []
         ))
         whenHidden.should.have.been.called
@@ -59,7 +59,7 @@ describe 'view.transition', ->
           push: (event) ->
             event.should.have.keys('node', 'previousValue', 'propertyName')
         )(viewstack(
-          show: false
+          transition: 'push'
           components: []
         ))
 
@@ -84,6 +84,7 @@ describe 'view.transition', ->
     describe 'with transition hooks', ->
       init = viewstack(
         show: true
+        transition: 'pop'
         components: []
       )
       emptyHooks = Immutable.OrderedMap()
@@ -101,7 +102,7 @@ describe 'view.transition', ->
           stack
             .get('views')
             .first()
-            .get('hooks')
+            .get('hooks', emptyHooks)
             .has('pop')
             .should.equal true
 
