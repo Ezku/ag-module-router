@@ -28,6 +28,16 @@ describe 'view.render', ->
       )))
       renderedView.should.have.property('hooks').have.property('hook').equal h
 
+    describe 'when show is set to false', ->
+      hiddenView = view(show: false)
+
+      it 'is rendered as hidden', ->
+        select('.viewstack .view.hidden')(render(viewstack(hiddenView))).length.should.equal 1
+
+      it 'has display set to hidden', ->
+        [ renderedView ] = select('.viewstack .view')(render(viewstack(hiddenView)))
+        renderedView.properties.should.have.property('attributes').have.property('styles').match /display: hidden/
+
     describe 'component', ->
       emptyComponent = {}
 

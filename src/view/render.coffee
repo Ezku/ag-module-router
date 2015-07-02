@@ -28,5 +28,16 @@ componentAttributes = do ->
 viewProps = do ->
   emptyHooks = Immutable.OrderedMap()
 
+  visibilityState = (view) ->
+    if view.get('show', true) is false
+      className: 'hidden'
+      attributes:
+        styles: "display: hidden;"
+    else
+      {}
+
   (view) ->
-    view.get('hooks', emptyHooks).toJS()
+    view
+      .get('hooks', emptyHooks)
+      .merge(visibilityState view)
+      .toJS()
