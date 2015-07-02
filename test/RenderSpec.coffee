@@ -11,13 +11,13 @@ describe 'view.render', ->
     render.should.be.a 'function'
 
   it 'accepts a viewstack and produces a virtual-dom tree', ->
-    select('DIV#viewstack').matches(render(viewstack())).should.be.true
+    select('DIV.viewstack').matches(render(viewstack())).should.be.true
 
   describe 'view', ->
     emptyView = view()
 
     it 'is rendered as a div', ->
-      select('#viewstack DIV.view')(render(viewstack(emptyView))).length.should.equal 1
+      select('.viewstack DIV.view')(render(viewstack(emptyView))).length.should.equal 1
 
     it 'can have vtree hooks applied', ->
       h = hook()
